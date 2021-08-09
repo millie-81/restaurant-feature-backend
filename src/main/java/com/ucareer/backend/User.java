@@ -2,7 +2,9 @@ package com.ucareer.backend;
 
 import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -93,10 +95,13 @@ public class User {
 
 
     @Temporal(TIMESTAMP)
+    @LastModifiedDate
+    @UpdateTimestamp
     private Date modified_at;
 
     @Temporal(TIMESTAMP)
     @CreatedDate
     @CreationTimestamp
+    //@Column(updatable = false)
     private Date created_at;
 }

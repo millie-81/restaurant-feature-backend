@@ -1,7 +1,10 @@
 package com.ucareer.backend;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +12,7 @@ import java.util.Date;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity //annotation , Link to Computer table in DB
+//@DynamicUpdate  use this annotation, if there miss some
 public class Computer {
 
     //annotation
@@ -91,10 +95,14 @@ public class Computer {
     }
 
     @Temporal(TIMESTAMP)
+    @LastModifiedDate
+    @Column(name = "modified_at")
+    @UpdateTimestamp
     private Date modified_at;
 
     @Temporal(TIMESTAMP)
     @CreatedDate
     @CreationTimestamp
+    //@Column(updatable = false)
     private Date created_at;
 }
