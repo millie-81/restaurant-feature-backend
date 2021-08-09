@@ -76,6 +76,20 @@ public class CpuController {
         cpu.setStatus("Updated");
         //let the id is the id which is customer input, if miss this one, id should be null, the it do insert
         cpu.setId(id);
+
+        //if request body no value of label or empty value of label, then keep the value
+        if(cpu.getLabel()==null || cpu.getLabel()=="" )
+        {
+            cpu.setLabel(updateOne.getLabel());
+        }
+
+        //if request body no price value, then keep
+        if(cpu.getPrice() == 0 )
+        {
+            cpu.setPrice(updateOne.getPrice());
+        }
+
+
         updateOne = cpuRepository.save(cpu);
         return updateOne;
     }

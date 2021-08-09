@@ -24,7 +24,7 @@ public class Cpu {
     private String description;
     private int price;
     private int core;
-    private int speed;
+    private String speed;
 
     public Long getId()
     {
@@ -86,11 +86,11 @@ public class Cpu {
     }
 
 
-    public int getSpeed()
+    public String getSpeed()
     {
         return speed;
     }
-    public void setSpeed(int speed)
+    public void setSpeed(String speed)
     {
         this.speed = speed;
     }

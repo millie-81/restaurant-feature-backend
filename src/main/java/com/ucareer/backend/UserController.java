@@ -76,6 +76,24 @@ public class UserController {
         //set the create_at , if miss this one, it will be null.
         user.setCreated_at(updateOne.getCreated_at());
 
+        //if request body no value of Email or empty value of Email, then keep the value
+        if(user.getEmail()==null || user.getEmail()=="" )
+        {
+            user.setEmail(updateOne.getEmail());
+        }
+
+        //if request body no value of password or empty value of password, then keep the value
+        if(user.getPassword() ==null || user.getPassword()=="" )
+        {
+            user.setPassword(updateOne.getPassword());
+        }
+
+        //if request body no value of username or empty value of username, then keep the value
+        if(user.getUsername() ==null || user.getUsername()=="" )
+        {
+            user.setUsername(updateOne.getUsername());
+        }
+
         updateOne = userRepository.save(user);
         return updateOne;
     }

@@ -79,6 +79,23 @@ public class ComputerController {
         computer.setStatus("Updated");
         //let the id is the id which is customer input, if miss this one, id should be null, the it do insert
         computer.setId(id);
+
+        //if request body no value of label or empty value of label, then keep the value
+        if(computer.getLable()==null || computer.getLable()=="" )
+        {
+            computer.setLable(findOne.getLable());
+        }
+        //if request body no price value, then keep
+        if(computer.getPrice() == 0 )
+        {
+            computer.setPrice(findOne.getPrice());
+        }
+        //if request body no value of type or empty value, then keep.
+        if(computer.getType()==null || computer.getType()=="" )
+        {
+            computer.setType(findOne.getType());
+        }
+
         //update the computer
         findOne = computerRepository.save(computer);
         return findOne;
