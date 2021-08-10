@@ -12,7 +12,7 @@ import java.util.Date;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity //annotation , Link to Computer table in DB
-//@DynamicUpdate  use this annotation, if there miss some
+@DynamicUpdate(true)  //use this annotation, if there miss some value, it keeps the value.
 public class Computer {
 
     //annotation

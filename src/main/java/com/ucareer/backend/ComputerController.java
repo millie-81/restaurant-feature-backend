@@ -119,4 +119,10 @@ public class ComputerController {
         }
     }
 
+//    @GetMapping("api/v1/Computer")
+//    public List<Computer> findComputerGreaterThan(@RequestParam int price)
+//    {
+//        List<Computer> getAll = computerRepository.getComputerByPriceGreaterThan(price);
+//        return  getAll;
+//    }
 }
