@@ -68,34 +68,34 @@ public class UserController {
     @PutMapping("api/v1/User/{id}")
     public User updateAUser(@PathVariable Long id, @RequestBody User user)
     {
-        User updateOne = userRepository.findById(id).orElse(null);
-        //let the id is the id which is customer input, if miss this one, id should be null, the it do insert
-        user.setId(id);
-        //set status as updated
-        user.setStatus("Updated");
-        //set the create_at , if miss this one, it will be null.
-        user.setCreated_at(updateOne.getCreated_at());
+        User updateOne = userRepository.findById(id).orElse(null); //this null means this function null
 
-        //if request body no value of Email or empty value of Email, then keep the value
-        if(user.getEmail()==null || user.getEmail()=="" )
+        //if there's no user object, return null, means can't find id = parameter 's user
+        if(updateOne == null)
         {
-            user.setEmail(updateOne.getEmail());
+            return null;
         }
 
-        //if request body no value of password or empty value of password, then keep the value
-        if(user.getPassword() ==null || user.getPassword()=="" )
+        //if email in request body have value then update
+        if(user.getEmail()!=null || user.getEmail()!= "")
         {
-            user.setPassword(updateOne.getPassword());
+            updateOne.setEmail(user.getEmail());
         }
 
-        //if request body no value of username or empty value of username, then keep the value
-        if(user.getUsername() ==null || user.getUsername()=="" )
+        //if password in request body have value then update
+        if(user.getPassword() != null || user.getPassword() !="")
         {
-            user.setUsername(updateOne.getUsername());
+            updateOne.setPassword(user.getPassword());
         }
 
-        updateOne = userRepository.save(user);
-        return updateOne;
+        //if user in request body have value then update
+        if(user.getUsername()!=null || user.getUsername()!="")
+        {
+            updateOne.setUsername(user.getUsername());
+        }
+
+        User showUpdateOne = userRepository.save(updateOne);
+        return showUpdateOne;
     }
 
     /*

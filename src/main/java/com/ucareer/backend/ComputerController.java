@@ -72,33 +72,38 @@ public class ComputerController {
     @PutMapping("api/v1/Computer/{id}")
     public Computer updateOneComputer(@PathVariable long id, @RequestBody Computer computer)
     {
-        Computer findOne = computerRepository.findById(id).orElse(null);
-        //set the create_at , if miss this one, it will be null.
-        computer.setCreated_at(findOne.getCreated_at());
-        //set status as updated
-        computer.setStatus("Updated");
-        //let the id is the id which is customer input, if miss this one, id should be null, the it do insert
-        computer.setId(id);
+        Computer findOne = computerRepository.findById(id).orElse(null);//this null means this function null
 
-        //if request body no value of label or empty value of label, then keep the value
-        if(computer.getLable()==null || computer.getLable()=="" )
+        //if there's no computer object, return null, means can't find id = parameter 's computer
+        if(findOne == null)
         {
-            computer.setLable(findOne.getLable());
+            return null;
         }
-        //if request body no price value, then keep
-        if(computer.getPrice() == 0 )
+
+        ////when do update, then change the status to updated
+        findOne.setStatus("Updated");
+
+        //if label in request body have value then update
+        if(computer.getLable() != null || computer.getLable() !="")
         {
-            computer.setPrice(findOne.getPrice());
+            findOne.setLable(computer.getLable());
         }
-        //if request body no value of type or empty value, then keep.
-        if(computer.getType()==null || computer.getType()=="" )
+
+        //if price in request body have value then update
+        if(computer.getPrice()!= 0)
         {
-            computer.setType(findOne.getType());
+            findOne.setPrice(computer.getPrice());
+        }
+
+        //if type in request body have value then update
+        if(computer.getType() != null || computer.getType() != "")
+        {
+            findOne.setType(computer.getType());
         }
 
         //update the computer
-        findOne = computerRepository.save(computer);
-        return findOne;
+        Computer showFindOne = computerRepository.save(findOne);
+        return showFindOne;
     }
 
     /*

@@ -69,29 +69,50 @@ public class CpuController {
     @PutMapping("api/v1/Cpu/{id}")
     public Cpu updateACpu(@PathVariable Long id, @RequestBody Cpu cpu)
     {
-        Cpu updateOne = cpuRepository.findById(id).orElse(null);
-        //set the create_at , if miss this one, it will be null.
-        cpu.setCreated_at(updateOne.getCreated_at());
-        //set status as updated
-        cpu.setStatus("Updated");
-        //let the id is the id which is customer input, if miss this one, id should be null, the it do insert
-        cpu.setId(id);
+        Cpu updateOne = cpuRepository.findById(id).orElse(null);//this null means this function null
 
-        //if request body no value of label or empty value of label, then keep the value
-        if(cpu.getLabel()==null || cpu.getLabel()=="" )
+        //if there's no cpu object, return null, means can't find id = parameter 's cpu
+        if(updateOne == null)
         {
-            cpu.setLabel(updateOne.getLabel());
+            return null;
         }
 
-        //if request body no price value, then keep
-        if(cpu.getPrice() == 0 )
+        //when do update, then change the status to updated
+        updateOne.setStatus("Updated");
+
+
+        //if core in request body have value then update
+        if(cpu.getCore()!=0)
         {
-            cpu.setPrice(updateOne.getPrice());
+            updateOne.setCore(cpu.getCore());
         }
 
+        //if label in request body have value then update
+        if(cpu.getLabel() != null || cpu.getLabel() != "")
+        {
+            updateOne.setLabel(cpu.getLabel());
+        }
 
-        updateOne = cpuRepository.save(cpu);
-        return updateOne;
+        //if description in request body have value then update
+        if(cpu.getDescription() != null || cpu.getDescription() != "")
+        {
+            updateOne.setDescription(cpu.getDescription());
+        }
+
+        //if price in request body have value then update
+        if(cpu.getPrice()!=0)
+        {
+            updateOne.setPrice(cpu.getPrice());
+        }
+
+        //if speed in request body have value then update
+        if(cpu.getSpeed() != null || cpu.getSpeed() != "")
+        {
+            updateOne.setSpeed(cpu.getSpeed());
+        }
+
+        Cpu showUdateOne = cpuRepository.save(updateOne);
+        return showUdateOne;
     }
 
     /*
