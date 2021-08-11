@@ -80,19 +80,19 @@ public class UserController {
         updateOne.setStatus("Updated");
 
         //if email in request body have value then update
-        if(user.getEmail()!=null || user.getEmail()!= "")
+        if(user.getEmail()!=null && user.getEmail()!= "")
         {
             updateOne.setEmail(user.getEmail());
         }
 
         //if password in request body have value then update
-        if(user.getPassword() != null || user.getPassword() !="")
+        if(user.getPassword() != null && user.getPassword() !="")
         {
             updateOne.setPassword(user.getPassword());
         }
 
         //if user in request body have value then update
-        if(user.getUsername()!=null || user.getUsername()!="")
+        if(user.getUsername()!=null && user.getUsername()!="")
         {
             updateOne.setUsername(user.getUsername());
         }

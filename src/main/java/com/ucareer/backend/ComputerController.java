@@ -84,7 +84,7 @@ public class ComputerController {
         findOne.setStatus("Updated");
 
         //if label in request body have value then update
-        if(computer.getLable() != null || computer.getLable() !="")
+        if(computer.getLable() != null && computer.getLable() !="")
         {
             findOne.setLable(computer.getLable());
         }
@@ -96,7 +96,7 @@ public class ComputerController {
         }
 
         //if type in request body have value then update
-        if(computer.getType() != null || computer.getType() != "")
+        if(computer.getType() != null && computer.getType() != "")
         {
             findOne.setType(computer.getType());
         }

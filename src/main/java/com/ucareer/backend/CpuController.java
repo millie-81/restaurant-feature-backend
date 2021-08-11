@@ -88,13 +88,13 @@ public class CpuController {
         }
 
         //if label in request body have value then update
-        if(cpu.getLabel() != null || cpu.getLabel() != "")
+        if(cpu.getLabel() != null && cpu.getLabel() != "")
         {
             updateOne.setLabel(cpu.getLabel());
         }
 
         //if description in request body have value then update
-        if(cpu.getDescription() != null || cpu.getDescription() != "")
+        if(cpu.getDescription() != null && cpu.getDescription() != "")
         {
             updateOne.setDescription(cpu.getDescription());
         }
@@ -106,7 +106,7 @@ public class CpuController {
         }
 
         //if speed in request body have value then update
-        if(cpu.getSpeed() != null || cpu.getSpeed() != "")
+        if(cpu.getSpeed() != null && cpu.getSpeed() != "")
         {
             updateOne.setSpeed(cpu.getSpeed());
         }
