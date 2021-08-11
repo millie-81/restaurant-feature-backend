@@ -76,6 +76,9 @@ public class UserController {
             return null;
         }
 
+        //set status when update
+        updateOne.setStatus("Updated");
+
         //if email in request body have value then update
         if(user.getEmail()!=null || user.getEmail()!= "")
         {
