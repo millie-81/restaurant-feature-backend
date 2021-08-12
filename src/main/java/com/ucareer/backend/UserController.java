@@ -17,7 +17,7 @@ public class UserController {
     then return the result
     select * from User
      */
-    @GetMapping("api/v1/User")
+    @GetMapping("api/v1/Users")
     public List<User> findAllUser()
     {
         List<User> allUsers = userRepository.findAll();
@@ -33,7 +33,7 @@ public class UserController {
 
     if parameter is not a int, then error 400, bad request.
      */
-    @GetMapping("api/v1/User/{id}")
+    @GetMapping("api/v1/Users/{id}")
     public User findAUser(@PathVariable Long id)
     {
         User getOne = userRepository.findById(id).orElse(null);
@@ -48,7 +48,7 @@ public class UserController {
 
     if with id, Error 405, method not allowed
      */
-    @PostMapping("api/v1/User")
+    @PostMapping("api/v1/Users")
     public User createAUser(@RequestBody User user)
     {
         user.setStatus("Initial");
@@ -65,7 +65,7 @@ public class UserController {
     ???????????????????????????????????????????
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
-    @PutMapping("api/v1/User/{id}")
+    @PutMapping("api/v1/Users/{id}")
     public User updateAUser(@PathVariable Long id, @RequestBody User user)
     {
         User updateOne = userRepository.findById(id).orElse(null); //this null means this function null
@@ -106,7 +106,7 @@ public class UserController {
     delete from User where id = xx;
     if without id, error 405, method not allowed
      */
-    @DeleteMapping("api/v1/User/{id}")
+    @DeleteMapping("api/v1/Users/{id}")
     public String deleteAUser(@PathVariable Long id)
     {
         try

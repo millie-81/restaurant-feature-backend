@@ -19,7 +19,7 @@ public class ComputerController {
     then return the result
     select * from computer
      */
-    @GetMapping("api/v1/Computer")
+    @GetMapping("api/v1/Computers")
     public List<Computer> getComputers()
     {
         List<Computer> computerList = computerRepository.findAll();
@@ -35,7 +35,7 @@ public class ComputerController {
 
     if parameter is not a int, then error 400, bad request.
      */
-    @GetMapping("api/v1/Computer/{id}")
+    @GetMapping("api/v1/Computers/{id}")
     public Computer getComputerById(@PathVariable Long id)
     {
         //orElse(null) means if can not find, return null
@@ -51,7 +51,7 @@ public class ComputerController {
 
     if with id, Error 405, method not allowed
      */
-    @PostMapping("api/v1/Computer")
+    @PostMapping("api/v1/Computers")
     public Computer createComputer(@RequestBody Computer computer)
     {
         computer.setStatus("Initial");
@@ -69,7 +69,7 @@ public class ComputerController {
     ???????????????????????????????????????????
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
-    @PutMapping("api/v1/Computer/{id}")
+    @PutMapping("api/v1/Computers/{id}")
     public Computer updateOneComputer(@PathVariable long id, @RequestBody Computer computer)
     {
         Computer findOne = computerRepository.findById(id).orElse(null);//this null means this function null
@@ -111,7 +111,7 @@ public class ComputerController {
     delete from Computer where id = xx;
     if without id, error 405, method not allowed
      */
-    @DeleteMapping("api/v1/Computer/{id}")
+    @DeleteMapping("api/v1/Computers/{id}")
     public String deleteOne(@PathVariable Long id)
     {
         try{

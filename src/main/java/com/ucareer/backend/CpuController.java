@@ -16,7 +16,7 @@ public class CpuController {
     then return the result
     select * from cpu
      */
-    @GetMapping("api/v1/Cpu")
+    @GetMapping("api/v1/Cpus")
     public List<Cpu> getAllCpu()
     {
         List<Cpu> findAll = cpuRepository.findAll();
@@ -32,7 +32,7 @@ public class CpuController {
 
     if parameter is not a int, then error 400, bad request.
      */
-    @GetMapping("api/v1/Cpu/{id}")
+    @GetMapping("api/v1/Cpus/{id}")
     public Cpu getACpu(@PathVariable Long id)
     {
         //orElse(null) means if can not find, return null
@@ -48,7 +48,7 @@ public class CpuController {
 
     if with id, Error 405, method not allowed
      */
-    @PostMapping("api/v1/Cpu")
+    @PostMapping("api/v1/Cpus")
     public Cpu createACpu( @RequestBody Cpu cpu)
     {
         //first time to insert so status is initial
@@ -66,7 +66,7 @@ public class CpuController {
     ???????????????????????????????????????????
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
-    @PutMapping("api/v1/Cpu/{id}")
+    @PutMapping("api/v1/Cpus/{id}")
     public Cpu updateACpu(@PathVariable Long id, @RequestBody Cpu cpu)
     {
         Cpu updateOne = cpuRepository.findById(id).orElse(null);//this null means this function null
@@ -120,7 +120,7 @@ public class CpuController {
     delete from cpu where id = xx;
     if without id, error 405, method not allowed
      */
-    @DeleteMapping("api/v1/Cpu/{id}")
+    @DeleteMapping("api/v1/Cpus/{id}")
     public String deleteACpu(@PathVariable Long id)
     {
         try
