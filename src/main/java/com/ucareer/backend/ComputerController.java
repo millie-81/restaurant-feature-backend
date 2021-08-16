@@ -2,6 +2,8 @@ package com.ucareer.backend;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,9 +11,9 @@ import java.util.List;
 @RestController
 public class ComputerController {
 
-    final ComputerRepository computerRepository;
+
     @Autowired
-    public ComputerController(ComputerRepository computerRepository){ this.computerRepository = computerRepository; }
+    ComputerService computerService;
 
     /*
     Get all data from computer
@@ -20,10 +22,20 @@ public class ComputerController {
     select * from computer
      */
     @GetMapping("api/v1/Computers")
-    public List<Computer> getComputers()
+    public ResponseEntity<ResponseBody> getComputers()
     {
-        List<Computer> computerList = computerRepository.findAll();
-        return computerList;
+        try
+        {
+            List<Computer> findAll = computerService.findAll();
+            ResponseBody<List> responseBody = new ResponseBody();
+            responseBody.setResult(findAll);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
+
     }
 
     /*
@@ -36,11 +48,24 @@ public class ComputerController {
     if parameter is not a int, then error 400, bad request.
      */
     @GetMapping("api/v1/Computers/{id}")
-    public Computer getComputerById(@PathVariable Long id)
+    public ResponseEntity<ResponseBody> findOneComputer (@PathVariable Long id)
     {
-        //orElse(null) means if can not find, return null
-        Computer findOne = computerRepository.findById(id).orElse(null);;
-        return findOne;
+        try
+        {
+            Computer findOne = computerService.findById(id);
+            ResponseBody<Computer> responseBody = new ResponseBody();
+            if(findOne == null)
+            {
+                responseBody.setMessage("item "+ id + " can not be found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            }
+            responseBody.setResult(findOne);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /*
@@ -52,11 +77,19 @@ public class ComputerController {
     if with id, Error 405, method not allowed
      */
     @PostMapping("api/v1/Computers")
-    public Computer createComputer(@RequestBody Computer computer)
+    public ResponseEntity<ResponseBody> createOneComputer(@RequestBody Computer computer)
     {
-        computer.setStatus("Initial");
-        Computer SaveOne = computerRepository.save(computer);
-        return SaveOne;
+        try
+        {
+            Computer createOne = computerService.createOneComputer(computer);
+            ResponseBody<Computer> responseBody = new ResponseBody();
+            responseBody.setResult(createOne);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /*
@@ -70,40 +103,26 @@ public class ComputerController {
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
     @PutMapping("api/v1/Computers/{id}")
-    public Computer updateOneComputer(@PathVariable long id, @RequestBody Computer computer)
+    public ResponseEntity <ResponseBody> updateOne(@PathVariable long id, @RequestBody Computer computer)
     {
-        Computer findOne = computerRepository.findById(id).orElse(null);//this null means this function null
-
-        //if there's no computer object, return null, means can't find id = parameter 's computer
-        if(findOne == null)
+        try
         {
-            return null;
+            Computer findOne = computerService.findById(id);
+            ResponseBody<Computer> responseBody = new ResponseBody();
+            if(findOne == null)
+            {
+                responseBody.setMessage("item "+ id + " can not be found");
+                responseBody.setError(new Exception("item can not be found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            }
+            Computer saveOne = computerService.updateOneComputer(id,computer);
+            responseBody.setResult(saveOne);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
-
-        ////when do update, then change the status to updated
-        findOne.setStatus("Updated");
-
-        //if label in request body have value then update
-        if(computer.getLable() != null && computer.getLable() !="")
+        catch (Exception e)
         {
-            findOne.setLable(computer.getLable());
+            return ResponseEntity.internalServerError().build();
         }
-
-        //if price in request body have value then update
-        if(computer.getPrice()!= 0)
-        {
-            findOne.setPrice(computer.getPrice());
-        }
-
-        //if type in request body have value then update
-        if(computer.getType() != null && computer.getType() != "")
-        {
-            findOne.setType(computer.getType());
-        }
-
-        //update the computer
-        Computer showFindOne = computerRepository.save(findOne);
-        return showFindOne;
     }
 
     /*
@@ -112,15 +131,18 @@ public class ComputerController {
     if without id, error 405, method not allowed
      */
     @DeleteMapping("api/v1/Computers/{id}")
-    public String deleteOne(@PathVariable Long id)
+    public ResponseEntity<ResponseBody> deleteOne(@PathVariable Long id)
     {
-        try{
-            computerRepository.deleteById(id);
-            return ("Successful");
+        ResponseBody<Boolean> responseBody = new ResponseBody();
+        try
+        {
+            boolean success = computerService.deleteOneComputer(id);
+            responseBody.setResult(success);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
         catch (Exception e)
         {
-            return ("Something Wrong");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
