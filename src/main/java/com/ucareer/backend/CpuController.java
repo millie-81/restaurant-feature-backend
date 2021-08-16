@@ -1,14 +1,19 @@
 package com.ucareer.backend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class CpuController {
+
+
+    final CpuService cpuService;
     @Autowired
-    CpuRepository cpuRepository;
+    public CpuController(CpuService cpuService){this.cpuService = cpuService;}
 
     /*
     Get all data from cpu
@@ -17,10 +22,19 @@ public class CpuController {
     select * from cpu
      */
     @GetMapping("api/v1/Cpus")
-    public List<Cpu> getAllCpu()
+    public ResponseEntity<ResponseBody> getAllCpus()
     {
-        List<Cpu> findAll = cpuRepository.findAll();
-        return findAll;
+        try
+        {
+            List<Cpu> findAll = cpuService.findAllCpu();
+            ResponseBody<List> responseBody = new ResponseBody();
+            responseBody.setResult(findAll);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /*
@@ -33,11 +47,24 @@ public class CpuController {
     if parameter is not a int, then error 400, bad request.
      */
     @GetMapping("api/v1/Cpus/{id}")
-    public Cpu getACpu(@PathVariable Long id)
+    public ResponseEntity<ResponseBody> getOneCpu(@PathVariable Long id)
     {
-        //orElse(null) means if can not find, return null
-        Cpu findOne = cpuRepository.findById(id).orElse(null);
-        return findOne;
+        try
+        {
+            Cpu findOne = cpuService.findOneCpu(id);
+            ResponseBody<Cpu> responseBody = new ResponseBody();
+            if(findOne == null)
+            {
+                responseBody.setMessage("item "+ id + " can not be found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            }
+            responseBody.setResult(findOne);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /*
@@ -49,12 +76,19 @@ public class CpuController {
     if with id, Error 405, method not allowed
      */
     @PostMapping("api/v1/Cpus")
-    public Cpu createACpu( @RequestBody Cpu cpu)
+    public ResponseEntity<ResponseBody> createOneCpu( @RequestBody Cpu cpu)
     {
-        //first time to insert so status is initial
-        cpu.setStatus("Initial");
-        Cpu createOne = cpuRepository.save(cpu);
-        return createOne;
+        try
+        {
+            Cpu createOne = cpuService.createOneCpu(cpu);
+            ResponseBody<Cpu> responseBody = new ResponseBody();
+            responseBody.setResult(createOne);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        }
+        catch (Exception e)
+        {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /*
@@ -67,52 +101,26 @@ public class CpuController {
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
     @PutMapping("api/v1/Cpus/{id}")
-    public Cpu updateACpu(@PathVariable Long id, @RequestBody Cpu cpu)
+    public ResponseEntity <ResponseBody> updateOneCpu(@PathVariable Long id, @RequestBody Cpu cpu)
     {
-        Cpu updateOne = cpuRepository.findById(id).orElse(null);//this null means this function null
-
-        //if there's no cpu object, return null, means can't find id = parameter 's cpu
-        if(updateOne == null)
+        try
         {
-            return null;
+            Cpu findOne = cpuService.findOneCpu(id);
+            ResponseBody<Cpu> responseBody = new ResponseBody();
+            if(findOne == null)
+            {
+                responseBody.setMessage("item "+ id + " can not be found");
+                responseBody.setError(new Exception("item can not be found"));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            }
+            Cpu saveOne = cpuService.updateOneCpu(id,cpu);
+            responseBody.setResult(saveOne);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
-
-        //when do update, then change the status to updated
-        updateOne.setStatus("Updated");
-
-
-        //if core in request body have value then update
-        if(cpu.getCore()!=0)
+        catch (Exception e)
         {
-            updateOne.setCore(cpu.getCore());
+            return ResponseEntity.internalServerError().build();
         }
-
-        //if label in request body have value then update
-        if(cpu.getLabel() != null && cpu.getLabel() != "")
-        {
-            updateOne.setLabel(cpu.getLabel());
-        }
-
-        //if description in request body have value then update
-        if(cpu.getDescription() != null && cpu.getDescription() != "")
-        {
-            updateOne.setDescription(cpu.getDescription());
-        }
-
-        //if price in request body have value then update
-        if(cpu.getPrice()!=0)
-        {
-            updateOne.setPrice(cpu.getPrice());
-        }
-
-        //if speed in request body have value then update
-        if(cpu.getSpeed() != null && cpu.getSpeed() != "")
-        {
-            updateOne.setSpeed(cpu.getSpeed());
-        }
-
-        Cpu showUdateOne = cpuRepository.save(updateOne);
-        return showUdateOne;
     }
 
     /*
@@ -121,16 +129,18 @@ public class CpuController {
     if without id, error 405, method not allowed
      */
     @DeleteMapping("api/v1/Cpus/{id}")
-    public String deleteACpu(@PathVariable Long id)
+    public ResponseEntity<ResponseBody> deleteOneCpu(@PathVariable Long id)
     {
+        ResponseBody<Boolean> responseBody = new ResponseBody();
         try
         {
-            cpuRepository.deleteById(id);
-            return ("Successful");
+            boolean success = cpuService.deleteOneCpu(id);
+            responseBody.setResult(success);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
         catch (Exception e)
         {
-            return ("Something wrong");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

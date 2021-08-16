@@ -22,11 +22,11 @@ public class ComputerController {
     select * from computer
      */
     @GetMapping("api/v1/Computers")
-    public ResponseEntity<ResponseBody> getComputers()
+    public ResponseEntity<ResponseBody> findAllComputers()
     {
         try
         {
-            List<Computer> findAll = computerService.findAll();
+            List<Computer> findAll = computerService.findAllComputer();
             ResponseBody<List> responseBody = new ResponseBody();
             responseBody.setResult(findAll);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
@@ -103,7 +103,7 @@ public class ComputerController {
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
     @PutMapping("api/v1/Computers/{id}")
-    public ResponseEntity <ResponseBody> updateOne(@PathVariable long id, @RequestBody Computer computer)
+    public ResponseEntity <ResponseBody> updateOneComputer(@PathVariable long id, @RequestBody Computer computer)
     {
         try
         {
@@ -131,7 +131,7 @@ public class ComputerController {
     if without id, error 405, method not allowed
      */
     @DeleteMapping("api/v1/Computers/{id}")
-    public ResponseEntity<ResponseBody> deleteOne(@PathVariable Long id)
+    public ResponseEntity<ResponseBody> deleteOneComputer(@PathVariable Long id)
     {
         ResponseBody<Boolean> responseBody = new ResponseBody();
         try
@@ -146,7 +146,7 @@ public class ComputerController {
         }
     }
 
-//    @GetMapping("api/v1/Computer")
+//    @GetMapping("api/v1/Computers")
 //    public List<Computer> findComputerGreaterThan(@RequestParam int price)
 //    {
 //        List<Computer> getAll = computerRepository.getComputerByPriceGreaterThan(price);

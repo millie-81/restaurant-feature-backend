@@ -1,10 +1,12 @@
 package com.ucareer.backend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+@Service
 public class CpuService {
 
     @Autowired
@@ -72,7 +74,7 @@ public class CpuService {
         return findOne;
     }
 
-    public Boolean deleteOne(Long id)
+    public Boolean deleteOneCpu(Long id)
     {
         cpuRepository.deleteById(id);
         return true;
