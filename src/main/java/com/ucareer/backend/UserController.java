@@ -9,16 +9,20 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
+/*
+    in this class,
+    all of them just use responseBody instead of Users
+ */
 public class UserController {
 
+    //use User Service which have the details of the logic
     @Autowired
     UserService userService;
 
+
     /*
-    Get all data from User
-    Use UserRepository's function findAll, UserRepository is extends JpaRepository
-    then return the result
-    select * from User
+    return a ResponseEntity, statusOk means 200, internalServerError means internet error
+    get a User List then put them to RequestBody's result,
      */
     @GetMapping("api/v1/Users")
     public ResponseEntity<ResponseBody> findAllUser()
@@ -37,13 +41,7 @@ public class UserController {
     }
 
     /*
-    Get a User by id
-    Use UserRepository's function findById
-    pass a variable(id) which customer input
-    then return the result
-    select * from User where id = xx
-
-    if parameter is not a int, then error 400, bad request.
+    get a User then put it to RequestBody's result,
      */
     @GetMapping("api/v1/Users/{id}")
     public ResponseEntity<ResponseBody> findAUser(@PathVariable Long id)
@@ -66,13 +64,9 @@ public class UserController {
         }
     }
 
-    /*
-    Create a User
-    pass the request body to the db
-    created_at is autofilled & cause this is the first time to modify the cpu, so create time equals to the modify time
-    insert into User(col_name1, col_name2) values(value1, value2);
 
-    if with id, Error 405, method not allowed
+    /*
+    create a User then put it to RequestBody's result,
      */
     @PostMapping("api/v1/Users")
     public ResponseEntity<ResponseBody> createAUser(@RequestBody User user)
@@ -90,14 +84,9 @@ public class UserController {
         }
     }
 
+
     /*
-    Update a cpu
-    pass the id and request body that user input
-    *
-    *
-    update User set col_name1 = value1, col_name2 = value2 where id = xx;
-    ???????????????????????????????????????????
-    if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
+    update a User then put it to RequestBody's result,
      */
     @PutMapping("api/v1/Users/{id}")
     public ResponseEntity<ResponseBody> updateOneUser(@PathVariable Long id, @RequestBody User user)
@@ -122,10 +111,9 @@ public class UserController {
         }
     }
 
+
     /*
-    delete a User by id
-    delete from User where id = xx;
-    if without id, error 405, method not allowed
+    delete a User then return success to RequestBody's result,
      */
     @DeleteMapping("api/v1/Users/{id}")
     public ResponseEntity<ResponseBody> deleteOneUser(@PathVariable Long id)
