@@ -29,10 +29,12 @@ public class UserService {
 
     public User createOneUser(User requestbody)
     {
+        requestbody.setStatus("Initial");
         User createOne = userRepository.save(requestbody);
         return createOne;
     }
 
+    //********Actually, because of do some setting on front end, for update, do not need if condition **** new added  20210817 10pm
     public User updateOneUser(Long id, User requestBody)
     {
         User findOne = userRepository.findById(id).orElse(null);
