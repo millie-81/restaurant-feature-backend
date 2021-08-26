@@ -1,5 +1,6 @@
-package com.ucareer.backend;
+package com.ucareer.backend.users;
 
+import com.ucareer.backend.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,12 @@ public class UserController {
     get a User List then put them to RequestBody's result,
      */
     @GetMapping("api/v1/Users")
-    public ResponseEntity<ResponseBody> findAllUser()
+    public ResponseEntity<com.ucareer.backend.ResponseBody> findAllUser()
     {
         try
         {
             List<User> findAll = userService.findAllUser();
-            ResponseBody<List> responseBody = new ResponseBody();
+            com.ucareer.backend.ResponseBody<List> responseBody = new com.ucareer.backend.ResponseBody();
             responseBody.setResult(findAll);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
@@ -44,12 +45,12 @@ public class UserController {
     get a User then put it to RequestBody's result,
      */
     @GetMapping("api/v1/Users/{id}")
-    public ResponseEntity<ResponseBody> findAUser(@PathVariable Long id)
+    public ResponseEntity<com.ucareer.backend.ResponseBody> findAUser(@PathVariable Long id)
     {
         try
         {
             User findOne = userService.findOneUser(id);
-            ResponseBody<User> responseBody = new ResponseBody();
+            com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
             if(findOne == null)
             {
                 responseBody.setMessage("item "+ id + " can not be found");
@@ -69,12 +70,12 @@ public class UserController {
     create a User then put it to RequestBody's result,
      */
     @PostMapping("api/v1/Users")
-    public ResponseEntity<ResponseBody> createAUser(@RequestBody User user)
+    public ResponseEntity<com.ucareer.backend.ResponseBody> createAUser(@RequestBody User user)
     {
         try
         {
             User createOne = userService.createOneUser(user);
-            ResponseBody<User> responseBody = new ResponseBody();
+            com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
             responseBody.setResult(createOne);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
@@ -89,12 +90,12 @@ public class UserController {
     update a User then put it to RequestBody's result,
      */
     @PutMapping("api/v1/Users/{id}")
-    public ResponseEntity<ResponseBody> updateOneUser(@PathVariable Long id, @RequestBody User user)
+    public ResponseEntity<com.ucareer.backend.ResponseBody> updateOneUser(@PathVariable Long id, @RequestBody User user)
     {
         try
         {
             User findOne = userService.findOneUser(id);
-            ResponseBody<User> responseBody = new ResponseBody();
+            com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
             if(findOne == null)
             {
                 responseBody.setMessage("item "+ id + " can not be found");
@@ -116,9 +117,9 @@ public class UserController {
     delete a User then return success to RequestBody's result,
      */
     @DeleteMapping("api/v1/Users/{id}")
-    public ResponseEntity<ResponseBody> deleteOneUser(@PathVariable Long id)
+    public ResponseEntity<com.ucareer.backend.ResponseBody> deleteOneUser(@PathVariable Long id)
     {
-        ResponseBody<Boolean> responseBody = new ResponseBody();
+        com.ucareer.backend.ResponseBody<Boolean> responseBody = new ResponseBody();
         try
         {
             boolean success = userService.deleteOneUser(id);

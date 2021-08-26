@@ -1,4 +1,4 @@
-package com.ucareer.backend;
+package com.ucareer.backend.computers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

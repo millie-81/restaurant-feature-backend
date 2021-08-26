@@ -1,7 +1,7 @@
-package com.ucareer.backend;
+package com.ucareer.backend.users;
 
+import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,19 +11,18 @@ import java.util.Date;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
-@Entity //annotation , Link to Computer table in DB
-@DynamicUpdate(true)  //use this annotation, if there miss some value, it keeps the value.
-public class Computer {
+@Entity
+public class User {
 
-    //annotation
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    private String username;
+    private String password;
+    private String email;
     private String status;
-    private String lable;
-    private int price;
-    private String type;
 
     public Long getId()
     {
@@ -32,6 +31,36 @@ public class Computer {
     public void setId(Long id)
     {
         this.id = id;
+    }
+
+
+    public String getUsername()
+    {
+        return username;
+    }
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+
+    public String getPassword()
+    {
+        return password;
+    }
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
+
+    public String getEmail()
+    {
+        return email;
+    }
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
 
 
@@ -45,64 +74,34 @@ public class Computer {
     }
 
 
-    public String getLable()
-    {
-        return lable;
-    }
-    public void setLable(String lable)
-    {
-        this.lable = lable;
-    }
-
-
-    public int getPrice()
-    {
-        return price;
-    }
-    public void setPrice(int price)
-    {
-        this.price = price;
-    }
-
-
-    public String getType()
-    {
-        return type;
-    }
-    public void setType(String type)
-    {
-        this.type = type;
-    }
-
-
     public Date getModified_at()
     {
-        return modified_at;
+        return modifiedAt;
     }
     public void setModified_at(Date modified_at)
     {
-        this.modified_at = modified_at;
+        this.modifiedAt = modified_at;
     }
 
 
     public Date getCreated_at()
     {
-        return created_at;
+        return createdAt;
     }
     public void setCreated_at(Date created_at)
     {
-        this.created_at = created_at;
+        this.createdAt = created_at;
     }
+
 
     @Temporal(TIMESTAMP)
     @LastModifiedDate
-    @Column(name = "modified_at")
     @UpdateTimestamp
-    private Date modified_at;
+    private Date modifiedAt;
 
     @Temporal(TIMESTAMP)
     @CreatedDate
     @CreationTimestamp
     //@Column(updatable = false)
-    private Date created_at;
+    private Date createdAt;
 }

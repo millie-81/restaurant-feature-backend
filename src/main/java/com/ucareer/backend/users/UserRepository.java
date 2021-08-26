@@ -1,4 +1,4 @@
-package com.ucareer.backend;
+package com.ucareer.backend.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

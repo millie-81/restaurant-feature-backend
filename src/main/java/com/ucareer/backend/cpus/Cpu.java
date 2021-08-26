@@ -1,4 +1,4 @@
-package com.ucareer.backend;
+package com.ucareer.backend.cpus;
 
 import jdk.jfr.Timespan;
 import org.hibernate.annotations.CreationTimestamp;
