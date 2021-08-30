@@ -112,4 +112,19 @@ public class UserService {
         userRepository.deleteById(id);
         return true;
     }
+
+
+    /*
+    check username exist or not
+     */
+    public User getByUsername(String username){
+        return this.userRepository.findDistinctByUsername(username);
+    }
+
+    /*
+    save User
+     */
+    public User saveUser(User user){
+        return userRepository.save(user);
+    }
 }

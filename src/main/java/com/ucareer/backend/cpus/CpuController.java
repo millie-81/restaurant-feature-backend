@@ -1,11 +1,13 @@
 package com.ucareer.backend.cpus;
 
 import com.ucareer.backend.ResponseBody;
+import com.ucareer.backend.util.TokenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SignatureException;
 import java.util.List;
 
 @RestController
@@ -17,20 +19,24 @@ public class CpuController {
     public CpuController(CpuService cpuService){this.cpuService = cpuService;}
 
     /*
+    if the user have the token, then can allow to visit
     Get all data from cpu
     Use CpuRepository's function findAll, CpuRepository is extends JpaRepository
     then return the result
     select * from cpu
      */
     @GetMapping("api/v1/Cpus")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> getAllCpus()
+    public ResponseEntity<com.ucareer.backend.ResponseBody> getAllCpus(@RequestHeader("Authorization") String token)
     {
         try
         {
+            String username = TokenHelper.VerifyToken(token);
             List<Cpu> findAll = cpuService.findAllCpu();
             com.ucareer.backend.ResponseBody<List> responseBody = new com.ucareer.backend.ResponseBody();
             responseBody.setResult(findAll);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        }catch (SignatureException sEx){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         catch (Exception e)
         {
