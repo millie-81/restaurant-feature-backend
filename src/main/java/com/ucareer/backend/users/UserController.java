@@ -141,6 +141,7 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
             }
             //user not exist, then save
+            userBody.setStatus("Initial");
             User saveUser = this.userService.saveUser(userBody);
             responseBody.setMessage("User create successful");
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
