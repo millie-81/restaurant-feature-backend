@@ -28,7 +28,7 @@ public class UserController {
     get a User List then put them to RequestBody's result,
      */
     @GetMapping("api/v1/Users")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> findAllUser() {
+    public ResponseEntity<ResponseBody> findAllUser() {
         try {
             List<User> findAll = userService.findAllUser();
             com.ucareer.backend.ResponseBody<List> responseBody = new com.ucareer.backend.ResponseBody();
@@ -43,7 +43,7 @@ public class UserController {
     get a User then put it to RequestBody's result,
      */
     @GetMapping("api/v1/Users/{id}")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> findAUser(@PathVariable Long id) {
+    public ResponseEntity<ResponseBody> findAUser(@PathVariable Long id) {
         try {
             User findOne = userService.findOneUser(id);
             com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
@@ -63,7 +63,7 @@ public class UserController {
     create a User then put it to RequestBody's result,
      */
     @PostMapping("api/v1/Users")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> createAUser(@RequestBody User user) {
+    public ResponseEntity<ResponseBody> createAUser(@RequestBody User user) {
         try {
             User createOne = userService.createOneUser(user);
             com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
@@ -79,7 +79,7 @@ public class UserController {
     update a User then put it to RequestBody's result,
      */
     @PutMapping("api/v1/Users/{id}")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> updateOneUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<ResponseBody> updateOneUser(@PathVariable Long id, @RequestBody User user) {
         try {
             User findOne = userService.findOneUser(id);
             com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
@@ -101,7 +101,7 @@ public class UserController {
     delete a User then return success to RequestBody's result,
      */
     @DeleteMapping("api/v1/Users/{id}")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> deleteOneUser(@PathVariable Long id) {
+    public ResponseEntity<ResponseBody> deleteOneUser(@PathVariable Long id) {
         com.ucareer.backend.ResponseBody<Boolean> responseBody = new ResponseBody();
         try {
             boolean success = userService.deleteOneUser(id);
@@ -157,7 +157,7 @@ public class UserController {
     2. check password can match or not
     3. generate token
      */
-    @GetMapping("api/v1/auth/login")
+    @PostMapping("api/v1/auth/login")
     public ResponseEntity<ResponseBody> login(@RequestBody LoginRequestBody requestBody) {
         try {
             ResponseBody<String> responseBody = new ResponseBody();
@@ -199,20 +199,21 @@ public class UserController {
     2. varify the token to to get the information from the token
     3. use the information to get the specific user
      */
-    @GetMapping("api/v1/Users/me")
+    @GetMapping("api/v1/users/me")
     public ResponseEntity<ResponseBody> getMe(@RequestHeader("Authorization") String token) {
         try {
             ResponseBody<User> responseBody = new ResponseBody();
             String username = TokenHelper.VerifyToken(token);
             User findOne = userService.getByUsername(username);
-            if(findOne == null){
+            if (findOne == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
             }
+            findOne.setPassword("");
             responseBody.setResult(findOne);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (SignatureException sEx) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }

@@ -26,13 +26,13 @@ public class CpuController {
     select * from cpu
      */
     @GetMapping("api/v1/Cpus")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> getAllCpus(@RequestHeader("Authorization") String token)
+    public ResponseEntity<ResponseBody> getAllCpus(@RequestHeader("Authorization") String token)
     {
         try
         {
             String username = TokenHelper.VerifyToken(token);
             List<Cpu> findAll = cpuService.findAllCpu();
-            com.ucareer.backend.ResponseBody<List> responseBody = new com.ucareer.backend.ResponseBody();
+            ResponseBody<List> responseBody = new ResponseBody();
             responseBody.setResult(findAll);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }catch (SignatureException sEx){
@@ -83,12 +83,12 @@ public class CpuController {
     if with id, Error 405, method not allowed
      */
     @PostMapping("api/v1/Cpus")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> createOneCpu(@RequestBody Cpu cpu)
+    public ResponseEntity<ResponseBody> createOneCpu(@RequestBody Cpu cpu)
     {
         try
         {
             Cpu createOne = cpuService.createOneCpu(cpu);
-            com.ucareer.backend.ResponseBody<Cpu> responseBody = new com.ucareer.backend.ResponseBody();
+            com.ucareer.backend.ResponseBody<Cpu> responseBody = new ResponseBody();
             responseBody.setResult(createOne);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         }
@@ -108,12 +108,12 @@ public class CpuController {
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
     @PutMapping("api/v1/Cpus/{id}")
-    public ResponseEntity <com.ucareer.backend.ResponseBody> updateOneCpu(@PathVariable Long id, @RequestBody Cpu cpu)
+    public ResponseEntity <ResponseBody> updateOneCpu(@PathVariable Long id, @RequestBody Cpu cpu)
     {
         try
         {
             Cpu findOne = cpuService.findOneCpu(id);
-            com.ucareer.backend.ResponseBody<Cpu> responseBody = new com.ucareer.backend.ResponseBody();
+            com.ucareer.backend.ResponseBody<Cpu> responseBody = new ResponseBody();
             if(findOne == null)
             {
                 responseBody.setMessage("item "+ id + " can not be found");
@@ -136,9 +136,9 @@ public class CpuController {
     if without id, error 405, method not allowed
      */
     @DeleteMapping("api/v1/Cpus/{id}")
-    public ResponseEntity<com.ucareer.backend.ResponseBody> deleteOneCpu(@PathVariable Long id)
+    public ResponseEntity<ResponseBody> deleteOneCpu(@PathVariable Long id)
     {
-        com.ucareer.backend.ResponseBody<Boolean> responseBody = new ResponseBody();
+        ResponseBody<Boolean> responseBody = new ResponseBody();
         try
         {
             boolean success = cpuService.deleteOneCpu(id);

@@ -18,8 +18,7 @@ public class UserService {
     then return the result
     select * from User
      */
-    public List<User> findAllUser()
-    {
+    public List<User> findAllUser() {
         List<User> findAll = userRepository.findAll();
         return findAll;
     }
@@ -34,11 +33,9 @@ public class UserService {
 
     if parameter is not a int, then error 400, bad request.
      */
-    public User findOneUser(Long id)
-    {
+    public User findOneUser(Long id) {
         User findOne = userRepository.findById(id).orElse(null);
-        if (findOne == null)
-        {
+        if (findOne == null) {
             return null;
         }
         return findOne;
@@ -53,8 +50,7 @@ public class UserService {
 
     if with id, Error 405, method not allowed
      */
-    public User createOneUser(User requestbody)
-    {
+    public User createOneUser(User requestbody) {
         requestbody.setStatus("Initial");
         User createOne = userRepository.save(requestbody);
         return createOne;
@@ -70,31 +66,26 @@ public class UserService {
     if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
      */
     //********Actually, because of do some setting on front end, for update, do not need if condition **** new added  20210817 10pm
-    public User updateOneUser(Long id, User requestBody)
-    {
+    public User updateOneUser(Long id, User requestBody) {
         User findOne = userRepository.findById(id).orElse(null);
-        if (findOne == null)
-        {
+        if (findOne == null) {
             return null;
         }
         //set status when update
         findOne.setStatus("Updated");
 
         //if email in request body have value then update
-        if(requestBody.getEmail()!=null && requestBody.getEmail()!= "")
-        {
+        if (requestBody.getEmail() != null && requestBody.getEmail() != "") {
             findOne.setEmail(requestBody.getEmail());
         }
 
         //if password in request body have value then update
-        if(requestBody.getPassword() != null && requestBody.getPassword() !="")
-        {
+        if (requestBody.getPassword() != null && requestBody.getPassword() != "") {
             findOne.setPassword(requestBody.getPassword());
         }
 
         //if user in request body have value then update
-        if(requestBody.getUsername()!=null && requestBody.getUsername()!="")
-        {
+        if (requestBody.getUsername() != null && requestBody.getUsername() != "") {
             findOne.setUsername(requestBody.getUsername());
         }
 
@@ -107,8 +98,7 @@ public class UserService {
     delete from User where id = xx;
     if without id, error 405, method not allowed
      */
-    public Boolean deleteOneUser(Long id)
-    {
+    public Boolean deleteOneUser(Long id) {
         userRepository.deleteById(id);
         return true;
     }
@@ -117,14 +107,15 @@ public class UserService {
     /*
     check username exist or not
      */
-    public User getByUsername(String username){
+    public User getByUsername(String username) {
         return this.userRepository.findDistinctByUsername(username);
     }
 
     /*
     save User
      */
-    public User saveUser(User user){
+    public User saveUser(User user) {
+        //user.setStatus("Initial");
         return userRepository.save(user);
     }
 }

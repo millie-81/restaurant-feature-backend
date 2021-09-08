@@ -78,9 +78,9 @@ public class User {
     {
         return modifiedAt;
     }
-    public void setModified_at(Date modified_at)
+    public void setModified_at(Date modifiedAt)
     {
-        this.modifiedAt = modified_at;
+        this.modifiedAt = modifiedAt;
     }
 
 
@@ -88,9 +88,9 @@ public class User {
     {
         return createdAt;
     }
-    public void setCreated_at(Date created_at)
+    public void setCreated_at(Date createdAt)
     {
-        this.createdAt = created_at;
+        this.createdAt = createdAt;
     }
 
 
