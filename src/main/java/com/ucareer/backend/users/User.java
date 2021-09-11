@@ -1,10 +1,12 @@
 package com.ucareer.backend.users;
 
+import com.ucareer.backend.landings.Landings;
 import jdk.jfr.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,11 +20,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String username;
     private String password;
     private String email;
     private String status;
+    private String first_name;
+    private String last_name;
+    private String address;
+
+    @Temporal(TIMESTAMP)
+    @LastModifiedDate
+    @UpdateTimestamp
+    private Date modified_at;
+
+    @Temporal(TIMESTAMP)
+    @CreatedDate
+    @CreationTimestamp
+    //@Column(updatable = false)
+    private Date created_at;
+
+    @OneToOne
+    @JoinColumn(name = "landing_id")
+    private Landings landings;
+
 
     public Long getId()
     {
@@ -76,32 +96,51 @@ public class User {
 
     public Date getModified_at()
     {
-        return modifiedAt;
+        return modified_at;
     }
     public void setModified_at(Date modifiedAt)
     {
-        this.modifiedAt = modifiedAt;
+        this.modified_at = modifiedAt;
     }
 
 
     public Date getCreated_at()
     {
-        return createdAt;
+        return created_at;
     }
     public void setCreated_at(Date createdAt)
     {
-        this.createdAt = createdAt;
+        this.created_at = createdAt;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
 
-    @Temporal(TIMESTAMP)
-    @LastModifiedDate
-    @UpdateTimestamp
-    private Date modifiedAt;
+    public String getLast_name() {
+        return last_name;
+    }
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
 
-    @Temporal(TIMESTAMP)
-    @CreatedDate
-    @CreationTimestamp
-    //@Column(updatable = false)
-    private Date createdAt;
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+
+    public Landings getLandings() {
+        return landings;
+    }
+    public void setLandings(Landings landings) {
+        this.landings = landings;
+    }
 }
