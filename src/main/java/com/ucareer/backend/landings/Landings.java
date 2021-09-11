@@ -1,6 +1,6 @@
 package com.ucareer.backend.landings;
 
-import com.ucareer.backend.feature_items.Feature_Items;
+import com.ucareer.backend.features.Features;
 import com.ucareer.backend.heads.Head;
 import com.ucareer.backend.menu_items.Menu_Item;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,7 +40,7 @@ public class Landings {
 
     @OneToMany
     @JoinColumn(name = "landing_id")
-    private List<Feature_Items> feature_itemsList;
+    private List<Features> feature_itemsList;
 
     @OneToMany
     @JoinColumn(name = "landing_id")
@@ -94,10 +94,10 @@ public class Landings {
     }
 
 
-    public List<Feature_Items> getFeature_itemsList() {
+    public List<Features> getFeature_itemsList() {
         return feature_itemsList;
     }
-    public void setFeature_itemsList(List<Feature_Items> feature_itemsList) {
+    public void setFeature_itemsList(List<Features> feature_itemsList) {
         this.feature_itemsList = feature_itemsList;
     }
 

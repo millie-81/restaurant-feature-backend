@@ -1,6 +1,5 @@
-package com.ucareer.backend.feature_items;
+package com.ucareer.backend.features;
 
-import com.ucareer.backend.landings.Landings;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,19 +7,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
-public class Feature_Items {
+public class Features {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
     private String description;
-    private String icon_url;
+    private String iconUrl;
     private String status;
 
     @Temporal(TIMESTAMP)
@@ -32,6 +30,8 @@ public class Feature_Items {
     @LastModifiedDate
     @UpdateTimestamp
     private Date modified_at;
+
+
 
 
     public Long getId() {
@@ -58,11 +58,11 @@ public class Feature_Items {
     }
 
 
-    public String getIcon_url() {
-        return icon_url;
+    public String getIconUrl() {
+        return iconUrl;
     }
-    public void setIcon_url(String icon_url) {
-        this.icon_url = icon_url;
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 
 
