@@ -1,5 +1,6 @@
 package com.ucareer.backend.features;
 
+import com.ucareer.backend.landings.Landings;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,10 +12,15 @@ import java.util.Date;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Entity
-public class Features {
+@Table(name="features")
+public class Feature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
+    @ManyToOne
+    @JoinColumn(name="landing_id")
+    private Landings landings;
 
     private String title;
     private String description;

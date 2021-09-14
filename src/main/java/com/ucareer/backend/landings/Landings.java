@@ -1,6 +1,7 @@
 package com.ucareer.backend.landings;
 
-import com.ucareer.backend.features.Features;
+import com.ucareer.backend.features.Feature;
+
 import com.ucareer.backend.heads.Head;
 import com.ucareer.backend.menu_items.Menu_Item;
 import org.hibernate.annotations.CreationTimestamp;
@@ -38,9 +39,8 @@ public class Landings {
     @JoinColumn(name = "header_id")
     private Head head;
 
-    @OneToMany
-    @JoinColumn(name = "landing_id")
-    private List<Features> feature_itemsList;
+    @OneToMany(mappedBy = "landings")
+    private List<Feature> features;
 
     @OneToMany
     @JoinColumn(name = "landing_id")
@@ -93,14 +93,13 @@ public class Landings {
         this.head = head;
     }
 
-
-    public List<Features> getFeature_itemsList() {
-        return feature_itemsList;
-    }
-    public void setFeature_itemsList(List<Features> feature_itemsList) {
-        this.feature_itemsList = feature_itemsList;
+    public List<Feature> getFeatures() {
+        return features;
     }
 
+    public void setFeatures(List<Feature> features) {
+        this.features = features;
+    }
 
     public List<Menu_Item> getMenu_items() {
         return menu_items;

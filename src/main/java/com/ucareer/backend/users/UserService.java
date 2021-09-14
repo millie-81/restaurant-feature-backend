@@ -80,14 +80,28 @@ public class UserService {
         }
 
         //if password in request body have value then update
-        if (requestBody.getPassword() != null && requestBody.getPassword() != "") {
-            findOne.setPassword(requestBody.getPassword());
+//        if (requestBody.getPassword() != null && requestBody.getPassword() != "") {
+//            findOne.setPassword(requestBody.getPassword());
+//        }
+        //change first name
+        if(requestBody.getFirstName() != null && requestBody.getFirstName() != ""){
+            findOne.setFirstName(requestBody.getFirstName());
+        }
+        //change last name
+        if(requestBody.getLastName() != null && requestBody.getLastName() != ""){
+            findOne.setLastName(requestBody.getLastName());
         }
 
+        //change address
+        if(requestBody.getAddress() != null && requestBody.getAddress() != ""){
+            findOne.setAddress(requestBody.getAddress());
+        }
         //if user in request body have value then update
         if (requestBody.getUsername() != null && requestBody.getUsername() != "") {
             findOne.setUsername(requestBody.getUsername());
         }
+
+
 
         User updateOne = userRepository.save(findOne);
         return updateOne;

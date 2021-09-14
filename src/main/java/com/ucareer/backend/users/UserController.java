@@ -27,7 +27,7 @@ public class UserController {
     return a ResponseEntity, statusOk means 200, internalServerError means internet error
     get a User List then put them to RequestBody's result,
      */
-    @GetMapping("api/v1/Users")
+    @GetMapping("api/v1/users")
     public ResponseEntity<ResponseBody> findAllUser() {
         try {
             List<User> findAll = userService.findAllUser();
@@ -62,7 +62,7 @@ public class UserController {
     /*
     create a User then put it to RequestBody's result,
      */
-    @PostMapping("api/v1/Users")
+    @PostMapping("api/v1/users")
     public ResponseEntity<ResponseBody> createAUser(@RequestBody User user) {
         try {
             User createOne = userService.createOneUser(user);
@@ -78,7 +78,7 @@ public class UserController {
     /*
     update a User then put it to RequestBody's result,
      */
-    @PutMapping("api/v1/Users/{id}")
+    @PutMapping("api/v1/users/{id}")
     public ResponseEntity<ResponseBody> updateOneUser(@PathVariable Long id, @RequestBody User user) {
         try {
             User findOne = userService.findOneUser(id);
@@ -100,7 +100,7 @@ public class UserController {
     /*
     delete a User then return success to RequestBody's result,
      */
-    @DeleteMapping("api/v1/Users/{id}")
+    @DeleteMapping("api/v1/users/{id}")
     public ResponseEntity<ResponseBody> deleteOneUser(@PathVariable Long id) {
         com.ucareer.backend.ResponseBody<Boolean> responseBody = new ResponseBody();
         try {
@@ -131,6 +131,11 @@ public class UserController {
             //if user's password is null or it's empty(no value), then return status is bad request
             if (userBody.getPassword() == null || userBody.getPassword().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+            }
+
+            // whether password equal to confirm password
+            if(!userBody.getConfirmPassword().equals(userBody.getPassword())){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
             }
 
             //find user
@@ -208,7 +213,6 @@ public class UserController {
             if (findOne == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
             }
-            findOne.setPassword("");
             responseBody.setResult(findOne);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (SignatureException sEx) {
