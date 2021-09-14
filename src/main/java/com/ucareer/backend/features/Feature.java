@@ -47,6 +47,13 @@ public class Feature {
         this.id = id;
     }
 
+    public Landings getLandings() {
+        return landings;
+    }
+
+    public void setLandings(Landings landings) {
+        this.landings = landings;
+    }
 
     public String getTitle() {
         return title;

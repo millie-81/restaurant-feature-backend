@@ -19,10 +19,10 @@ public class FeatureController {
     }
 
     //get all features
-    @GetMapping("api/v1/features")
-    public ResponseEntity<ResponseBody> getFeatures() {
+    @GetMapping("api/v1/landings/{landingsId}/features")
+    public ResponseEntity<ResponseBody> getFeatures(@PathVariable Long landingsId) {
         try {
-            List<Feature> foundList = featureService.getFeatures();
+            List<Feature> foundList = featureService.getFeatures(landingsId);
             ResponseBody<List> responseBody = new ResponseBody<>();
             responseBody.setResult(foundList);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
@@ -33,10 +33,10 @@ public class FeatureController {
     }
 
     //get a feature
-    @GetMapping("api/v1/features/{id}")
-    public ResponseEntity<ResponseBody> getAFeature(@PathVariable Long id) {
+    @GetMapping("api/v1/landings/{landingsId}/features/{id}")
+    public ResponseEntity<ResponseBody> getAFeature(@PathVariable Long landingsId,@PathVariable Long id) {
         try {
-            Feature foundOne = featureService.getFeature(id);
+            Feature foundOne = featureService.getFeature(id,landingsId);
             ResponseBody<Feature> responseBody = new ResponseBody<>();
             if (foundOne == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
@@ -49,8 +49,8 @@ public class FeatureController {
     }
 
     //create a feature
-    @PostMapping("api/v1/features")
-    public ResponseEntity<ResponseBody> createFeature(@RequestBody Feature feature) {
+    @PostMapping("api/v1/landings/langdingsId/features")
+    public ResponseEntity<ResponseBody> createFeature(@RequestBody Feature feature,@PathVariable Long landingsId) {
         try {
             Feature saveOne = featureService.createFeature(feature);
             ResponseBody<Feature> responseBody = new ResponseBody<>();
@@ -62,10 +62,10 @@ public class FeatureController {
     }
 
     //update a feature
-    @PutMapping("api/v1/features/{id}")
-    public ResponseEntity<ResponseBody> updateFeature(@RequestBody Feature feature, @PathVariable Long id) {
+    @PutMapping("api/v1/landings/{landingsId}/features/{id}")
+    public ResponseEntity<ResponseBody> updateFeature(@RequestBody Feature feature, @PathVariable Long id,@PathVariable Long landingsId) {
         try {
-            Feature foundOne = featureService.getFeature(id);
+            Feature foundOne = featureService.getFeature(id,landingsId);
             ResponseBody<Feature> responseBody = new ResponseBody<>();
             if (foundOne == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
@@ -79,9 +79,10 @@ public class FeatureController {
     }
 
     //delete a feature
-    public ResponseEntity<ResponseBody> deleteFeature(@PathVariable Long id) {
+    @DeleteMapping("api/v1/landings/{landingsId}/features/{id}")
+    public ResponseEntity<ResponseBody> deleteFeature(@PathVariable Long id,@PathVariable Long landingsId) {
         try {
-            Boolean success = featureService.deleteFeature(id);
+            Boolean success = featureService.deleteFeature(id,landingsId);
             ResponseBody<Boolean> responseBody = new ResponseBody<>();
             responseBody.setResult(success);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
