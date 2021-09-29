@@ -1,6 +1,8 @@
 package com.ucareer.backend.users;
 
 import com.ucareer.backend.ResponseBody;
+import com.ucareer.backend.landings.Landings;
+import com.ucareer.backend.landings.LandingsRepository;
 import com.ucareer.backend.util.TokenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,15 @@ import java.util.List;
 public class UserController {
 
     //use User Service which have the details of the logic
-    @Autowired
+    final
     UserService userService;
+    final
+    LandingsRepository landingsRepository;
+
+    public UserController(UserService userService, LandingsRepository landingsRepository) {
+        this.userService = userService;
+        this.landingsRepository = landingsRepository;
+    }
 
 
     /*
@@ -42,7 +51,7 @@ public class UserController {
     /*
     get a User then put it to RequestBody's result,
      */
-    @GetMapping("api/v1/Users/{id}")
+    @GetMapping("api/v1/users/{id}")
     public ResponseEntity<ResponseBody> findAUser(@PathVariable Long id) {
         try {
             User findOne = userService.findOneUser(id);
@@ -66,7 +75,8 @@ public class UserController {
     public ResponseEntity<ResponseBody> createAUser(@RequestBody User user) {
         try {
             User createOne = userService.createOneUser(user);
-            com.ucareer.backend.ResponseBody<User> responseBody = new com.ucareer.backend.ResponseBody();
+            ResponseBody<User> responseBody = new ResponseBody();
+
             responseBody.setResult(createOne);
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (Exception e) {
@@ -147,7 +157,7 @@ public class UserController {
             }
             //user not exist, then save
             userBody.setStatus("Initial");
-            User saveUser = this.userService.saveUser(userBody);
+            User saveUser = this.userService.createOneUser(userBody);
             responseBody.setMessage("User create successful");
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (Exception e) {

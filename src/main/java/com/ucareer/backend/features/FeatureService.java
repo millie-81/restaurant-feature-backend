@@ -1,7 +1,10 @@
 package com.ucareer.backend.features;
 
 import com.ucareer.backend.landings.LandingsRepository;
+import com.ucareer.backend.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,26 +14,28 @@ import java.util.Optional;
 public class FeatureService {
     final
     FeatureRepository featureRepository;
-    @Autowired
+    final
     LandingsRepository landingsRepository;
 
-    public FeatureService(FeatureRepository featureRepository) {
+    public FeatureService(FeatureRepository featureRepository, LandingsRepository landingsRepository) {
         this.featureRepository = featureRepository;
+        this.landingsRepository = landingsRepository;
     }
 
     // find all features
-    public List<Feature>  getFeatures(Long landingsId){
-        return featureRepository.findByLandingsId(landingsId);
+    public List<Feature>  getFeatures(){
+        return featureRepository.findAll();
     }
 
     // find one feature
-    public Feature getFeature(Long id, Long landingsId){
-        return featureRepository.findByIdAndLandingsId(id,landingsId);
+    public Feature getFeature(Long id){
+        return featureRepository.findById(id).orElse(null);
     }
 
     //create a feature
-    public Feature createFeature(Feature feature,Long landingsId){
-       landingsRepository.findById(landingsId)
+    public Feature createFeature(Feature feature){
+      Feature savedOne = featureRepository.save(feature);
+      return savedOne;
     }
 
     //update a feature, foundOne is the feature which we get from database
@@ -51,7 +56,25 @@ public class FeatureService {
     }
 
     //public delete feature
-    public Boolean deleteFeature(Long id,Long landingsId){
-        return featureRepository.deleteByIdAndLandingsId(id, landingsId);
+    public Boolean deleteFeature(Long id, User user){
+        if(allowAccess(id,user) != null){
+            featureRepository.deleteById(id);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public Feature allowAccess(Long id, User user){
+        Feature foundFeature = getFeature(id);
+        if (foundFeature == null) {
+            return null;
+        }
+        if(foundFeature.getLandings().getId() != user.getLandings().getId()){
+            return null;
+        }
+
+        return foundFeature;
     }
 }
+

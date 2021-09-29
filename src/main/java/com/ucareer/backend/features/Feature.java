@@ -1,5 +1,6 @@
 package com.ucareer.backend.features;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ucareer.backend.landings.Landings;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,6 +19,7 @@ public class Feature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="landing_id")
     private Landings landings;

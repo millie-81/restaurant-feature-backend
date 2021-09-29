@@ -8,7 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface FeatureRepository extends JpaRepository<Feature,Long> {
-    Feature findByIdAndLandingsId(Long id,Long landingsId);
-    List<Feature> findByLandingsId(Long landingsId);
-    Boolean deleteByIdAndLandingsId(Long id, Long landingsId);
+    Feature findDistinctById(Long id);
 }

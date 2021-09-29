@@ -1,5 +1,7 @@
 package com.ucareer.backend.users;
 
+import com.ucareer.backend.landings.Landings;
+import com.ucareer.backend.landings.LandingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +10,16 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
+    final
     UserRepository userRepository;
+    final
+    LandingsRepository landingsRepository;
+
+    public UserService(UserRepository userRepository, LandingsRepository landingsRepository) {
+        this.userRepository = userRepository;
+        this.landingsRepository = landingsRepository;
+    }
+
 
 
     /*
@@ -41,31 +51,16 @@ public class UserService {
         return findOne;
     }
 
-
-    /*
-    Create a User
-    pass the request body to the db
-    created_at is autofilled & cause this is the first time to modify the cpu, so create time equals to the modify time
-    insert into User(col_name1, col_name2) values(value1, value2);
-
-    if with id, Error 405, method not allowed
-     */
-    public User createOneUser(User requestbody) {
-        requestbody.setStatus("Initial");
-        User createOne = userRepository.save(requestbody);
-        return createOne;
+    public User createOneUser(User user){
+        User savedOne = userRepository.save(user);
+        Landings landings = new Landings();
+        Landings savedLandings = landingsRepository.save(landings);
+        savedOne.setLandings(savedLandings);
+        savedOne = userRepository.save(savedOne);
+        return savedOne;
     }
 
-    /*
-    Update a cpu
-    pass the id and request body that user input
-    *
-    *
-    update User set col_name1 = value1, col_name2 = value2 where id = xx;
-    ???????????????????????????????????????????
-    if id = null, do insert , if id exist , do update.... but id is a parameter, why it should input in request body
-     */
-    //********Actually, because of do some setting on front end, for update, do not need if condition **** new added  20210817 10pm
+
     public User updateOneUser(Long id, User requestBody) {
         User findOne = userRepository.findById(id).orElse(null);
         if (findOne == null) {
@@ -123,13 +118,5 @@ public class UserService {
      */
     public User getByUsername(String username) {
         return this.userRepository.findDistinctByUsername(username);
-    }
-
-    /*
-    save User
-     */
-    public User saveUser(User user) {
-        //user.setStatus("Initial");
-        return userRepository.save(user);
     }
 }
