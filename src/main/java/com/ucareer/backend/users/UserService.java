@@ -40,8 +40,6 @@ public class UserService {
     pass a variable(id) which customer input
     then return the result
     select * from User where id = xx
-
-    if parameter is not a int, then error 400, bad request.
      */
     public User findOneUser(Long id) {
         User findOne = userRepository.findById(id).orElse(null);
@@ -104,8 +102,7 @@ public class UserService {
 
     /*
     delete a User by id
-    delete from User where id = xx;
-    if without id, error 405, method not allowed
+    delete from User where id = xx
      */
     public Boolean deleteOneUser(Long id) {
         userRepository.deleteById(id);
