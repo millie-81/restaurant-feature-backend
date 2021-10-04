@@ -14,10 +14,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-/*
-    in this class,
-    all of them just use responseBody instead of Users
- */
+
 public class UserController {
 
     //use User Service which have the details of the logic
@@ -33,7 +30,7 @@ public class UserController {
 
 
     /*
-    return a ResponseEntity, statusOk means 200, internalServerError means internet error
+    return a ResponseEntity, statusOk means 200, internalServerError means internal error
     get a User List then put them to RequestBody's result,
      */
     @GetMapping("api/v1/users")
@@ -211,7 +208,7 @@ public class UserController {
     /*
     Get User information
     1. get the token from header
-    2. varify the token to to get the information from the token
+    2. verify the token to get the information from the token
     3. use the information to get the specific user
      */
     @GetMapping("api/v1/users/me")
